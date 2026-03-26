@@ -6,76 +6,71 @@
     <title>Yusufxonpro Builder</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --primary: #00f2fe; --secondary: #4facfe; --bg: #0a0a0b; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; overflow-x: hidden; }
+        :root { --p: #00f2fe; --s: #4facfe; --bg: #0d0d0e; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; display: flex; flex-direction: column; align-items: center; }
         
-        /* Loading Screen */
-        #loader { position: fixed; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
-        .spinner { width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* Main Design */
-        .container { padding: 20px; display: none; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Glassmorphism Design */
+        .card { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px); 
+            border-radius: 24px; 
+            padding: 25px; 
+            width: 85%; 
+            margin: 15px 0; 
+            text-align: center;
+            transition: 0.3s;
+        }
+        .card:active { transform: scale(0.95); }
         
-        h1 { font-size: 24px; text-align: center; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h1 { margin-top: 30px; background: linear-gradient(var(--p), var(--s)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; }
+        h3 { margin: 10px 0; color: var(--p); }
+        p { color: #aaa; font-size: 14px; }
+        .price { display: block; margin: 15px 0; color: #00ff88; font-weight: bold; font-size: 18px; }
         
-        .card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px; margin-bottom: 20px; transition: 0.3s; }
-        .card:active { transform: scale(0.98); border-color: var(--primary); }
-        
-        .card h3 { margin: 0; color: var(--primary); font-size: 18px; }
-        .card p { color: #888; font-size: 14px; margin: 10px 0; }
-        .price { font-weight: bold; color: #00ff88; font-size: 16px; }
-        
-        .buy-btn { background: linear-gradient(45deg, var(--secondary), var(--primary)); border: none; color: white; padding: 12px; width: 100%; border-radius: 12px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        .btn { 
+            background: linear-gradient(45deg, var(--s), var(--p)); 
+            border: none; color: white; padding: 15px; width: 100%; 
+            border-radius: 15px; font-weight: bold; cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+        }
     </style>
 </head>
 <body>
 
-<div id="loader">
-    <div class="spinner"></div>
-    <p style="margin-top: 20px; letter-spacing: 2px;">YUSUFXONPRO UZ</p>
-</div>
-
-<div class="container" id="app">
-    <h1>Bot Builder Shop</h1>
-    <p style="text-align: center; color: #666;">Kerakli bot turini tanlang</p>
+    <h1>Yusufxonpro Shop</h1>
 
     <div class="card">
         <h3>🛡 Reklama Tozalovchi</h3>
-        <p>Guruhlarni reklamadan 24/7 himoya qiladi.</p>
+        <p>Guruhlarni 24/7 reklamadan tozalab turadi.</p>
         <span class="price">17,000 UZS</span>
-        <button class="buy-btn" onclick="sendToBot('Reklama Tozalovchi')">Sotib olish</button>
-    </div>
-
-    <div class="card">
-        <h3>🔢 Professional Kalkulyator</h3>
-        <p>Murakkab misollarni xatosiz hisoblaydi.</p>
-        <span class="price">17,000 UZS</span>
-        <button class="buy-btn" onclick="sendToBot('Kalkulyator')">Sotib olish</button>
+        <button class="btn" onclick="order('Reklama Tozalovchi')">Sotib olish</button>
     </div>
 
     <div class="card">
         <h3>📚 Matematika O'yini</h3>
-        <p>1-11 sinf misollari va 27 soniyalik taymer.</p>
+        <p>1-11 sinf savollari va 27s taymer.</p>
         <span class="price">17,000 UZS</span>
-        <button class="buy-btn" onclick="sendToBot('Matematika Oyini')">Sotib olish</button>
+        <button class="btn" onclick="order('Matematika Oyini')">Sotib olish</button>
     </div>
-</div>
 
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    <div class="card">
+        <h3>🔢 Kalkulyator Bot</h3>
+        <p>Professional hisob-kitob boti.</p>
+        <span class="price">17,000 UZS</span>
+        <button class="btn" onclick="order('Kalkulyator')">Sotib olish</button>
+    </div>
 
-    setTimeout(() => {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-    }, 2000);
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
 
-    function sendToBot(service) {
-        tg.sendData(JSON.stringify({service: service}));
-        tg.close();
-    }
-</script>
+        function order(service) {
+            // Botga ma'lumot yuborish (JUDA MUHIM)
+            tg.sendData(JSON.stringify({service: service}));
+            // Saytni yopish
+            tg.close();
+        }
+    </script>
 </body>
 </html>
