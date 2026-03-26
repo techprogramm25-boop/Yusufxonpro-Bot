@@ -1,53 +1,51 @@
-import asyncio
-import json
-from aiogram import Bot, Dispatcher, types, F
-from aiogram.filters import Command
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yusufxonpro Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: white; text-align: center; padding: 20px; }
+        .item { background: #1e1e1e; border: 1px solid #0088cc; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .price { color: #00ff00; font-weight: bold; font-size: 1.2em; }
+        button { background: #0088cc; color: white; border: none; padding: 10px 20px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; }
+        #loading { font-size: 24px; margin-top: 50%; }
+    </style>
+</head>
+<body>
+    <div id="loading">Yusufxonpro uz...<br>2 soniya kuting...</div>
+    <div id="main" style="display:none;">
+        <h2>Bot Do'koni</h2>
+        <div class="item">
+            <h3>📚 Matematika (1-11 sinf)</h3>
+            <p class="price">17,000 so'm</p>
+            <button onclick="buy('math')">Sotib olish</button>
+        </div>
+        <div class="item">
+            <h3>🛡 Reklama Tozalovchi</h3>
+            <p class="price">17,000 so'm</p>
+            <button onclick="buy('cleaner')">Sotib olish</button>
+        </div>
+        <div class="item">
+            <h3>🔢 Kalkulyator Bot</h3>
+            <p class="price">17,000 so'm</p>
+            <button onclick="buy('calc')">Sotib olish</button>
+        </div>
+    </div>
 
-# ASOSIY BOT TOKENI
-TOKEN = "8624653791:AAFZrNRVUPWVgrGUqzm0KBa9e9C510Iine0"
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('main').style.display = 'block';
+        }, 2000);
 
-active_bots = {}
-
-@dp.message(Command("start"))
-async def start(message: types.Message):
-    # Web App tugmasini yaratish
-    builder = types.InlineKeyboardMarkup(inline_keyboard=[
-        [types.InlineKeyboardButton(
-            text="📱 Online Do'konni ochish", 
-            web_app=types.WebAppInfo(url="https://SIZNING_SAYTINGIZ_MANZILI.com"))] # HTML faylingiz manzili
-    ])
-    await message.answer("Assalomu alaykum Yusufxonpro! Quyidagi tugmani bosing:", reply_markup=builder)
-
-# Web App-dan ma'lumot kelganda
-@dp.message(F.web_app_data)
-async def handle_web_app_data(message: types.Message):
-    data = json.loads(message.web_app_data.data)
-    bot_type = data['type']
-    new_token = data['token']
-
-    await message.answer(f"✅ Rahmat! {bot_type} botingiz qabul qilindi va ishga tushirilmoqda...")
-
-    try:
-        new_bot = Bot(token=new_token)
-        new_dp = Dispatcher()
-
-        @new_dp.message(Command("start"))
-        async def sub_start(msg: types.Message):
-            await msg.answer(f"Salom! Bu Yusufxonpro Builder orqali yaratilgan {bot_type} boti.")
-
-        # Bu yerga bot_type-ga qarab Matematika yoki Reklama mantiqini qo'shasiz
-        
-        asyncio.create_task(new_dp.start_polling(new_bot))
-        active_bots[new_token] = True
-        await message.answer("🚀 Botingiz 24/7 rejimda ishga tushdi!")
-
-    except Exception as e:
-        await message.answer("❌ Xatolik: Token yaroqsiz!")
-
-async def main():
-    await dp.start_polling(bot)
-
-if __name__ == "__main__":
-    asyncio.run(main())
+        function buy(type) {
+            tg.sendData(JSON.stringify({action: "buy", service: type}));
+            tg.close();
+        }
+    </script>
+</body>
+</html>
